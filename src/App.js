@@ -16,7 +16,7 @@ export default function App() {
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(false);
 
   //shuffle cards
   const shuffleCards = () => {
@@ -24,6 +24,8 @@ export default function App() {
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
 
+    setChoiceOne(null);
+    setChoiceTwo(null);
     setCards(shuffledCards);
     setTurns(0);
   };
@@ -54,8 +56,6 @@ export default function App() {
     }
   }, [choiceOne, choiceTwo]);
 
-  console.log(cards);
-
   // reset choices & incerease turn
   const resetTurn = () => {
     setChoiceOne(null);
@@ -63,6 +63,11 @@ export default function App() {
     setTurns((prevTurns) => prevTurns + 1);
     setDisabled(false);
   };
+
+  // start a new game automatically
+  useEffect(() => {
+    shuffleCards();
+  }, []);
 
   return (
     <div className="App">
@@ -79,6 +84,7 @@ export default function App() {
           />
         ))}
       </div>
+      <p>Turns: {turns}</p>
     </div>
   );
 }
